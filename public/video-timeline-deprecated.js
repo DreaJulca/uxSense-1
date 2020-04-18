@@ -1,4 +1,4 @@
-var video = document.getElementByID('ux-video');
+var video = document.getElementByID('video_html5_api');
 var vidDur = video.duration;
 
 var thumbCount = 8;

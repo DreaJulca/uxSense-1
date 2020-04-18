@@ -1,12 +1,7 @@
 /**
  * I should really start commenting my code better. Create timeline "cursor" (current time indicator)--should be draggable
  */
-var video = document.getElementById('ux-video');
-var height = 100;
-var width = 1200;
-
-// set the dimensions and margins of the graph
-var margin = { top: 10, right: 50, bottom: 30, left: 50 }
+var uxvideo = document.getElementById('video_html5_api');
 
 var focussvg = d3.select('#focussvg').select('g')
 var markersize = 100;
@@ -30,30 +25,36 @@ focussvg.append('path')
 
 function dragstarted() {
   d3.select(this).raise().classed("active", true);
+  interactiontracking(JSON.stringify(d3.event), "premierefocus", "markertriangle", 'drag start')
+
 }
 
 function dragged() {
-  video.currentTime = video.duration * d3.event.x/width
+  uxvideo.currentTime = uxvideo.duration * d3.event.x/width
   d3.select(this)
   .attr('transform', 'rotate(180) translate('+(-d3.event.x)+',0)')
+
+  interactiontracking(JSON.stringify(d3.event), "premierefocus", "markertriangle", 'dragged')
+
 }
 
 function dragended() {
-  video.currentTime = video.duration * d3.event.x/width
+  uxvideo.currentTime = uxvideo.duration * d3.event.x/width
   d3.select(this).classed("active", false);
+  interactiontracking(JSON.stringify(d3.event), "premierefocus", "markertriangle", 'drag end')
 }
 
 function moveMarker() {
   var minTime = 0;
-  var maxTime = video.duration;
+  var maxTime = uxvideo.duration;
   var focusselectbox = focussvg.select('rect.selection');
   
   if(focusselectbox.attr('style') == ""){
-    minTime = video.duration * focusselectbox.attr('x')/width
-    maxTime = video.duration * (parseFloat(focusselectbox.attr('x')) + parseFloat(focusselectbox.attr('width')))/width  
+    minTime = uxvideo.duration * focusselectbox.attr('x')/width
+    maxTime = uxvideo.duration * (parseFloat(focusselectbox.attr('x')) + parseFloat(focusselectbox.attr('width')))/width  
   } 
 
-  var cursorlineX = width * (video.currentTime - minTime)/(maxTime-minTime)
+  var cursorlineX = width * (uxvideo.currentTime - minTime)/(maxTime-minTime)
 
   try{
     //try to remove marker g.rects for all timelines
@@ -62,8 +63,9 @@ function moveMarker() {
     console.log(err)
   }
 
-  var markerX = width * (video.currentTime/video.duration)
+  var markerX = width * (uxvideo.currentTime/uxvideo.duration)
 
+  if(cursorlineX > -Infinity)
   //add marker g.rects for all timelines
   d3.select('.timelines-box').selectAll('svg')
   .append('g')
@@ -81,8 +83,12 @@ function moveMarker() {
     setTimeout("moveMarker()", 50)
   } else {
     marker.transition().duration(50).attr('transform', 'rotate(180) translate('+(-markerX)+',0)')
-    .on("end",function(){moveMarker()})
+    .on("end",function(){
+      moveMarker()
+    })
   }
 }
 
-moveMarker();
+uxvideo.addEventListener('loadeddata', function(){
+  setTimeout("moveMarker();", 1550)
+})

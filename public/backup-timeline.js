@@ -1,4 +1,4 @@
-var video = document.getElementById("ux-video");
+var video = document.getElementById("video_html5_api");
 
 var vidTimelineInterval = 30;
 

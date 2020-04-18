@@ -1,0 +1,341 @@
+WEBVTT - Some title
+
+00:00.1000 --> 00:02.805
+Starting recording
+
+00:03.020 --> 00:04.005
+Ah
+
+00:04.580 --> 00:06.005
+And
+
+00:11.210 --> 00:15.290
+So we are going to have a 10-minute long session
+
+00:15.290 --> 00:17.680
+where you are going to be exploring
+
+00:18.225 --> 00:25.525
+Forbes 2018 list of wealthiest people dataset
+
+00:25.525 --> 00:29.585
+and you are going to be thinking aloud as you are exploring the data
+
+00:29.585 --> 00:36.530
+and at the end you are going to make one or two interesting points about the data
+
+00:36.530 --> 00:42.250
+features of the data you found revealing or interesting or informative
+
+00:42.250 --> 00:46.965
+and I will give you a five minute warning, and I will give you a one minute warning
+
+00:46.965 --> 00:51.455
+I may ask questions, you may ask questions of me
+
+00:51.455 --> 00:57.150
+but other than that I'm going to try to stay relatively silent
+
+00:57.150 --> 01:01.365
+Alright, go ahead and begin by importing the data and then analyze it
+
+01:01.410 --> 02:03.275
+[User Action]
+
+02:03.815 --> 02:04.305
+Hmmm
+
+02:08.980 --> 02:11.610
+So why do you -- China has many things
+
+02:12.925 --> 02:15.110
+Oh, why I pick this one?
+
+02:16.750 --> 02:18.750
+I thought
+
+02:19.385 --> 02:22.825
+It'd be interesting to kind of compare by countries
+
+02:24.335 --> 02:27.250
+That's like the first thing that just came to my mind
+
+02:30.625 --> 02:31.835
+And ummm
+
+02:38.085 --> 02:41.325
+You can see that France and Germany is pretty good 
+
+02:41.325 --> 02:45.900
+in retails, whereas the United States is also good
+
+02:45.900 --> 02:49.125
+In terms of finance and investments,
+
+02:49.125 --> 02:54.605
+Well, the United States is the number one and there are not many... maybe Russia?
+
+02:54.605 --> 02:56.605
+Hmmm
+
+02:57.320 --> 03:01.530
+For the beverages... ummm... US
+
+03:03.750 --> 03:06.810
+Health care... Oh, China!
+
+03:07.430 --> 03:15.625
+Exception... Manufacturing... China is the number one as expected
+
+03:18.370 --> 03:21.815
+Media and entertainments, yeah, look at the movies they make
+
+03:22.220 --> 03:24.220
+Oscars
+
+03:25.205 --> 03:27.205
+Metals and mining... Russia
+
+03:27.675 --> 03:29.885
+This is pretty interesting in real estate
+
+03:32.1000 --> 03:33.775
+Hongkong?
+
+03:35.870 --> 03:39.760
+Yeah, Hongkong is China. That means China's money is actually going to Hongkong
+
+03:39.760 --> 03:42.990
+So China is actually, should be actually bigger than this one
+
+03:43.770 --> 03:48.700
+And Unites States, they got a lot of lands, New york maybe?
+
+03:49.350 --> 03:58.590
+Technology... woohoo, yeah Apple, Facebook these things
+
+03:59.525 --> 04:04.775
+Telecomms as well, they are out of, popular right now so
+
+04:06.415 --> 04:08.415
+Let me take off the industry now
+
+04:13.860 --> 04:19.120
+somewhat, okay, well, the US, no surprise
+
+04:21.115 --> 04:22.030
+Hmmm
+
+04:25.575 --> 04:26.455
+Gender?
+
+04:35.615 --> 04:41.810
+It's very predictable that males have higher values 
+
+04:42.700 --> 04:46.490
+with basically no exception but 
+
+04:46.485 --> 04:48.835
+among the females, US is the largest 
+
+04:52.145 --> 04:54.145
+Yeah, you can see that
+
+04:58.175 --> 05:01.725
+Age? I don't think it's gonna be that much difference
+
+05:07.360 --> 05:10.030
+Hmmm? What is this? Age
+
+05:11.620 --> 05:15.420
+So you get a 5-minute warning -- Wait, they ask for average, average, average
+
+05:18.175 --> 05:21.110
+Yeah there is no correlation in age, I could see that
+
+05:22.395 --> 05:26.565
+I'm taking away, well, the source
+
+05:33.070 --> 05:35.070
+This is a bad visualization
+
+05:35.495 --> 05:37.495
+They have so many things
+
+05:42.405 --> 05:44.490
+Ralph Lauren? Well, source?
+
+05:48.035 --> 05:51.840
+Anyway, I don't like this, I don't like this feature here
+
+05:52.650 --> 05:54.085
+What is the position?
+
+06:03.075 --> 06:03.970
+Position
+
+06:13.060 --> 06:15.080
+Oh, I don't know what position is but 
+
+06:15.270 --> 06:18.085
+by looking at the average, it doesn't seem to have any kind of...
+
+06:18.470 --> 06:22.615
+Well, umm, position is...
+
+06:24.460 --> 06:31.495
+Do you have a guess to what position is in this list of rankings of the richest people in the world?
+
+06:33.065 --> 06:37.030
+Ohhh, is it like how many rich people are in that place?
+
+06:39.455 --> 06:45.570
+I think it's just the individual's position on the ranking list
+
+06:45.585 --> 06:46.935
+Oh really?
+
+06:46.965 --> 06:50.980
+So, 50 richest person so on and so forth
+
+06:53.560 --> 06:59.000
+Well, either way, it doesn't seem to have any correlation to the net worth
+
+06:59.445 --> 07:02.535
+Take it away, latitude
+
+07:10.035 --> 07:15.245
+Yeah like, when I was in high school people used to say "rich north poor south"
+
+07:16.540 --> 07:17.430
+Longitude
+
+07:19.895 --> 07:23.970
+I have a feeling that latitude and longitude are pretty much similar
+
+07:27.140 --> 07:27.660
+Hmmm
+
+07:32.960 --> 07:34.645
+Well, not similar 
+
+07:39.470 --> 07:40.445
+Source?
+
+07:55.355 --> 07:57.915
+Yeah, it would be better if I saw it this way
+
+08:01.640 --> 08:04.750
+Real estate, yep, that makes people rich
+
+08:06.885 --> 08:08.135
+can take away the country
+
+08:09.355 --> 08:10.790
+It's pretty more or less the same
+
+08:15.150 --> 08:16.260
+Diversified 
+
+08:18.325 --> 08:20.325
+Hedge funds, investments 
+
+08:21.615 --> 08:23.935
+Real estate, woohoo, you are the winner!
+
+08:27.725 --> 08:28.740
+Walmart
+
+08:30.845 --> 08:31.795
+Zara
+
+08:32.795 --> 08:34.685
+We're just about at the one-minute warning here, so...
+
+08:34.685 --> 08:36.985
+Okay, no problem
+
+08:36.985 --> 08:38.985
+points to discuss 
+
+08:43.595 --> 08:44.715
+Number of records?
+
+09:01.605 --> 09:03.280
+Average worth, okay
+
+09:10.095 --> 09:13.325
+Hmmm, gender... getting there
+
+09:18.915 --> 09:21.065
+But, on the average,
+
+09:21.825 --> 09:26.930
+There isn't much difference between man and woman which means that
+
+09:26.940 --> 09:33.035
+It's just the mad difference in the numbers. I think that there isn't much difference in the net worth
+
+09:33.940 --> 09:34.840
+Probably
+
+09:36.900 --> 09:42.320
+Last thing it will source, I'm not so much interested, age?
+
+09:56.615 --> 09:59.595
+63, the richest people's average age is 63
+
+10:03.990 --> 10:05.990
+Okay, so we are out of time
+
+10:06.220 --> 10:12.320
+Is there one or two main points that you found most interesting looking at the dataset
+
+10:13.170 --> 10:19.805
+Well, this dataset is probably about the distribution of rich people
+
+10:19.835 --> 10:21.130
+I could see that
+
+10:22.660 --> 10:24.770
+Between the rich people
+
+10:25.295 --> 10:28.435
+Real estate, has the...
+
+10:31.010 --> 10:34.515
+The source of richness comes from the real estate
+
+10:34.885 --> 10:38.485
+It is the most effective thing, like Donald Trump, for example
+
+10:39.105 --> 10:44.070
+And probably the net worth between men and women were different
+
+10:44.070 --> 10:53.515
+But, the average value between per person about men and women were not that different as the net worth
+
+10:54.040 --> 11:02.370
+which kind of shows that, probably, the number of rich people in men are more than women, but
+
+11:02.400 --> 11:07.385
+women, the rich people, the rich women
+
+11:08.135 --> 11:11.965
+have almost as equivalent money as the men
+
+11:12.915 --> 11:15.110
+That's something I discovered, and 
+
+11:16.225 --> 11:23.190
+it doesn't really have a lot of correlation with latitude and longitude
+
+11:24.705 --> 11:28.540
+Age was about 64, 65 -- average age -- yeah
+
+11:29.470 --> 11:33.865
+like age of the rich people average, yep
+
+11:33.885 --> 11:38.320
+Thank you so much! I am gonna stop recording now -- Okay, I'm glad that helped
+

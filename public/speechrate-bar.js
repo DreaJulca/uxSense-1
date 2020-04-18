@@ -1,4 +1,4 @@
-var video = document.getElementById('ux-video');
+var video = document.getElementById('video_html5_api');
 
 // set the dimensions and margins of the graph
 var margin = { top: 0, right: 50, bottom: 0, left: 50 },

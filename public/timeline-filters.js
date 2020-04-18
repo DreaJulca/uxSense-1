@@ -1,25 +1,19 @@
-var video = document.getElementById('ux-video');
+var uxvideo = document.getElementById('video_html5_api');
 
-var margin = { top: 0, right: 50, bottom: 0, left: 50 },
-    // width = 460 - margin.left - margin.right,
-    // height = 400 - margin.top - margin.bottom;
-    width = 1200,
-    filterheight = 50;
-
-    var sliderwidth = 15;
-
+refreshuxSDimVars();
 
 //document.addEventListener("DOMContentLoaded", function (event) {
 $(document).ready(function () {
-    drawPathSlider('speech-rate', 'speechratelinepath');
-    drawPathSlider('pitch', 'pitchlinepath');
-    drawBarSlider('Action1');
-    drawBarSlider('Emotion');
+    setTimeout("drawPathSlider('speech-rate', 'speechratelinepath');", 1500)
+    setTimeout("drawPathSlider('pitch', 'pitchlinepath');", 1500)
+    setTimeout("drawBarSlider('Action1');", 1500)
+    setTimeout("drawBarSlider('Emotion');", 1500)
 
 });
 
 
 function drawPathSlider(containerID, pathID){
+    refreshuxSDimVars();
 
     var svg = d3.select("#" + containerID).select('svg')
 
@@ -51,8 +45,12 @@ function drawPathSlider(containerID, pathID){
     .on("brush end", function () {
         var s = d3.event.selection || yScaleBottom.range();
         yScaleTop.domain(s.map(yScaleBottom.invert, yScaleBottom));
+        
+
+        interactiontracking(yScaleTop.domain(), containerID, pathID, 'brush end')
+
         //d3.selectAll('.x.axis').call(xAxisTop);
-        //video.currentTime = video.duration * (focussvg.select('rect.selection').attr('x') / width)
+        //uxvideo.currentTime = uxvideo.duration * (focussvg.select('rect.selection').attr('x') / width)
         //focus.select(".line").attr("d", lineTop);
         //if(focussvg.select('rect.selection').attr('width') > 0 | focussvg.select('rect.selection').attr('width') == null){rescaleTimelines();}
     })
@@ -84,6 +82,8 @@ function drawPathSlider(containerID, pathID){
 
 
 function drawBarSlider(containerID){
+
+    refreshuxSDimVars();
 
     var svg = d3.select("#" + containerID).select('svg')
 
@@ -122,6 +122,8 @@ function drawBarSlider(containerID){
     .on("brush end", function () {
         var s = d3.event.selection || yScaleBottom.range();
         yScaleTop.domain(s.map(yScaleBottom.invert, yScaleBottom));
+
+        interactiontracking(yScaleTop.domain(), containerID, containerID, 'brush end')
 
         g.selectAll('.'+rectclass).each(function(d){
             if(1*d.prob >= yScaleTop.domain()[1] & 1*d.prob <= yScaleTop.domain()[0]){

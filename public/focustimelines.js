@@ -1,19 +1,23 @@
 //This is where we handle both the focus timeline and the timeline marker that hits all the table svgs
-var video = document.getElementById('ux-video');
+var uxvideo = document.getElementById('video_html5_api');
+refreshuxSDimVars();
 
-var margin = { top: 10, right: 50, bottom: 10, left: 50 },
-    width = 1200;
-var height = 100 - margin.top - margin.bottom;
-var focusHeight = 10;
+var focusHeight = 20;
 var hmargin = 10;
+
+
 
 var focussvg = d3.select('#premierefocus').append('svg')
     .attr('id', 'focussvg')
-    .attr('width', width + margin.left + margin.right)
+    .attr('width', "100%")
     .attr('height',focusHeight + hmargin)
+    .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (focusHeight + hmargin))
+    .attr("preserveAspectRatio", "none")
+    .style('display', 'inline-block')
+    .style('position', 'relative')
     .append('g')
     .attr("transform",
-        "translate(" + margin.left + ",0)");
+        "translate(" + .95*margin.left + ",0)");
     //.attr('transform', 'translate(0,' + hmargin + ')');
 
 var bgslide = focussvg.append('rect')
@@ -33,9 +37,21 @@ var brush = d3.brushX()
         var s = d3.event.selection || xScaleBottom.range();
         xScaleTop.domain(s.map(xScaleBottom.invert, xScaleBottom));
         //d3.selectAll('.x.axis').call(xAxisTop);
-        video.currentTime = video.duration * (focussvg.select('rect.selection').attr('x') / width)
+        var uxvidPrevTime = uxvideo.currentTime;
+        uxvideo.currentTime = video.duration * (focussvg.select('rect.selection').attr('x') / width)
+        
+        var selrect = focussvg.select('rect.selection');
+
         //focus.select(".line").attr("d", lineTop);
-        if(focussvg.select('rect.selection').attr('width') > 0 | focussvg.select('rect.selection').attr('width') == null){rescaleTimelines();}
+        if(focussvg.select('rect.selection').attr('width') > 0 | selrect.attr('width') == null){
+            interactiontracking(xScaleTop.domain(), 'premierefocus', 'rect.selection', 'brush end', [{oldtime: uxvidPrevTime}, {newtime: uxvideo.currentTime}])
+
+            rescaleTimelines();
+
+            //Add panning dragging to all nodes again
+            addPanningToSVGs();            
+
+        }
     })
 
 //Leave space for cursor
@@ -47,16 +63,20 @@ brushg.append('g')
 .selectAll('rect');
 
 function rescaleTimelines(){
+    refreshuxSDimVars();
+
     rescaleEmotions();
     rescaleActions();
     rescaleSpeechrate();
     rescalePitch();
+    rescaleFrames();
+    rescaleAnnotations();
 }
 
 function rescaleEmotions(){
     var emotions = d3.select("#emotionrects")
     var maxEnd = parseFloat(emotions.attr('maxEnd'))
-    var fps = maxEnd/video.duration
+    var fps = maxEnd/uxvideo.duration
 
     var selrect = d3.select('#focussvg').select('rect.selection');
 
@@ -68,8 +88,8 @@ function rescaleEmotions(){
         selX = 1;
     }
 
-    var minTime = video.duration * selX/width
-    var maxTime = video.duration * ( selX + selwid )/width  
+    var minTime = uxvideo.duration * selX/width
+    var maxTime = uxvideo.duration * ( selX + selwid )/width  
 
     var widMult = width/selwid
 
@@ -108,7 +128,7 @@ function rescaleEmotions(){
 function rescaleActions(){
     var actions = d3.select("#action1rects")
     var maxEnd = parseFloat(actions.attr('maxEnd'))
-    var fps = maxEnd/video.duration
+    var fps = maxEnd/uxvideo.duration
 
     var selrect = d3.select('#focussvg').select('rect.selection');
 
@@ -121,8 +141,8 @@ function rescaleActions(){
     }
 
 
-    var minTime = video.duration * selX/width
-    var maxTime = video.duration * ( selX + selwid )/width  
+    var minTime = uxvideo.duration * selX/width
+    var maxTime = uxvideo.duration * ( selX + selwid )/width  
 
     var widMult = width/selwid
 
@@ -180,8 +200,8 @@ function rescaleSpeechrate(){
     }
 
 
-    var minTime = video.duration * selX/width
-    var maxTime = video.duration * ( selX + selwid )/width  
+    var minTime = uxvideo.duration * selX/width
+    var maxTime = uxvideo.duration * ( selX + selwid )/width  
 
     var newMinFrame = minTime * fps
     var newMaxFrame = maxTime * fps
@@ -226,8 +246,8 @@ function rescaleSpeechrate(){
         var x0 = x.invert(d3.mouse(this)[0]);
         var i = bisect(data, x0, 1);
         selectedData = data[i]
-        var minutes = Math.floor((video.duration * selectedData.Start/maxEnd)/60)
-        var seconds = Math.round(60 * (((video.duration * selectedData.Start/maxEnd)/60) - minutes))
+        var minutes = Math.floor((uxvideo.duration * selectedData.Start/maxEnd)/60)
+        var seconds = Math.round(60 * (((uxvideo.duration * selectedData.Start/maxEnd)/60) - minutes))
         var secStr = seconds < 10 ? "0" + seconds.toString() : seconds.toString()
         focus
             .attr("cx", x(selectedData.Start))
@@ -247,7 +267,7 @@ function rescaleSpeechrate(){
         var i = bisect(data, x0, 1);
         selectedData = data[i]
 
-        video.currentTime = video.duration * selectedData.Start/maxEnd 
+        uxvideo.currentTime = uxvideo.duration * selectedData.Start/maxEnd 
 
     }
 }
@@ -260,7 +280,7 @@ function rescalePitch(){
 
     var data = JSON.parse(line.attr("origdata"));
 
-    var fps = maxEnd/video.duration
+    var fps = maxEnd/uxvideo.duration
 
     var selrect = d3.select('#focussvg').select('rect.selection');
 
@@ -272,8 +292,8 @@ function rescalePitch(){
         selX = 1;
     }
 
-    var minTime = video.duration * selX/width
-    var maxTime = video.duration * ( selX + selwid )/width  
+    var minTime = uxvideo.duration * selX/width
+    var maxTime = uxvideo.duration * ( selX + selwid )/width  
 
     var newMinFrame = minTime * fps
     var newMaxFrame = maxTime * fps
@@ -336,8 +356,8 @@ function rescalePitch(){
         var x0 = x.invert(d3.mouse(this)[0]);
         var i = bisect(data, x0, 1);
         selectedData = data[i]
-        var minutes = Math.floor((video.duration * selectedData.x/maxEnd)/60)
-        var seconds = Math.round(60 * (((video.duration * selectedData.x/maxEnd)/60) - minutes))
+        var minutes = Math.floor((uxvideo.duration * selectedData.x/maxEnd)/60)
+        var seconds = Math.round(60 * (((uxvideo.duration * selectedData.x/maxEnd)/60) - minutes))
         var secStr = seconds < 10 ? "0" + seconds.toString() : seconds.toString()
         focus
             .attr("cx", x(selectedData.x))
@@ -357,9 +377,196 @@ function rescalePitch(){
         var i = bisect(data, x0, 1);
         selectedData = data[i]
 
-        video.currentTime = video.duration * selectedData.x/maxEnd
+        uxvideo.currentTime = uxvideo.duration * selectedData.x/maxEnd
 
     }
 
 
+}
+
+
+function rescaleFrames(){
+    var thumbs = d3.select("#thumbframes")
+    var maxEnd = parseFloat(thumbs.attr('maxEnd'))
+    var fps = maxEnd/uxvideo.duration
+
+    var data = JSON.parse(thumbs.attr("origdata"));
+
+    var selrect = d3.select('#focussvg').select('rect.selection');
+
+    var selwid = parseFloat(selrect.attr('width'))
+    var selX = parseFloat(selrect.attr('x'))
+
+    if(isNaN(selwid)){
+        selwid = width;
+        selX = 1;
+    }
+
+
+    var minTime = uxvideo.duration * selX/width
+    var maxTime = uxvideo.duration * ( selX + selwid )/width
+
+    var widMult = width/selwid
+
+    var newMinFrame = Math.floor(minTime * fps)
+    var newMaxFrame = Math.ceil(maxTime * fps)
+
+    var filtdata = _.filter(data, function(o){return parseFloat(o.vidnum) >= newMinFrame & parseFloat(o.vidnum) <= newMaxFrame })
+
+    
+    var x = d3.scaleLinear()
+    .domain([newMinFrame, newMaxFrame])
+    .range([0, width]);
+
+    function rectWidth(lowerVal, upperVal){
+        gap = upperVal-lowerVal;
+        rangeMult = widMult * (width/maxEnd)
+        return (gap * rangeMult)
+    }
+
+    //var sliderImgCount = Math.ceil(120*selwid/width);
+    var sliderImgCount = 120;
+
+    var bunchMult = sliderImgCount/width;
+    var frameSkip = Math.ceil(newMaxFrame/sliderImgCount);
+    
+
+    d3.select("#vidthumbnailsvg")
+    .on("mouseover", function(){
+      var fisheye = d3.fisheye.circular()
+      .radius(width/5)
+      .distortion(7*width/sliderImgCount);
+
+      fisheye.focus(d3.mouse(this));
+
+        var thumbs = d3.selectAll('.thumbframe')
+        thumbs.each(function(d) { 
+          d.fisheye = fisheye(d); 
+        })
+        .attr("x", function(d) {
+          var distortX = Math.min(Math.max(d.fisheye.x, 0), (width-(margin.right+margin.left)))
+          var xChk = fisheye(imgPaths[(imgPaths.length-1)]).x
+          if((xChk < 1000) || (d3.select("#vidthumbnailsvg").attr('isdragging') == "true")){
+            return d.x
+          } else {
+            return distortX;   
+          }
+        })
+
+        //Track event
+        interactiontracking(JSON.stringify(d3.mouse(this)), 'vidtimelineholder', 'vidtimelineholder', 'mouseover')
+
+        var x0 = x.invert(d3.mouse(this)[0]);
+        var i = bisect(filtdata, x0, 1);
+        var focalThumbnail;
+        if(i < filtdata.length){
+            focalThumbnail = filtdata[i].vidnum
+
+        if(focalThumbnail <= maxTime & focalThumbnail > 0){
+
+            var timelinesvgElem = document.getElementById('vidtimelineholder')
+            var bodyRect = document.body.getBoundingClientRect(),
+            elemRect = timelinesvgElem.getBoundingClientRect(),
+            offset   = elemRect.top - bodyRect.top;
+                
+          //populate that tooltip
+          d3.select('#thumbtooltip')
+          .style("left", Math.min((d3.event.pageX - 100), .85*width) + "px")
+          //.style("top", (d3.event.pageY - 100) + "px")   
+          .style("top", offset + "px")
+          .style('opacity', 1)
+          .on('click', function(){
+            try{
+              uxvideo.currentTime=focalThumbnail
+            } catch(err){
+              console.log(err)
+            }
+          })
+          
+          try{
+            d3.select('#thumbtooltip')
+          .html('"<img src="frames/frame'+focalThumbnail+'.png" style="min-width:10vw;"></img>')
+          } catch(err){
+            console.log(err)
+          }
+        }
+        
+    }
+
+
+    })
+    .on("mouseleave", function(){
+        var thumbs = d3.selectAll('.thumbframe')
+ 
+        thumbs
+          .attr("x", function(d) { return(d.x)})
+
+        interactiontracking(JSON.stringify(d3.mouse(this)), 'vidtimelineholder', 'vidtimelineholder', 'mouseleave')
+
+        d3.select('#thumbtooltip')
+        .transition().duration(100)
+        .style('opacity', 0)
+  
+
+    })
+    .on('click', mouseclick)
+
+    //inelegant
+    d3.selectAll(".thumbframeg").remove()
+
+    for(i = 0; i<filtdata.length; i+=frameSkip){
+        var thumbX = widMult * ( (i/frameSkip)*(width/sliderImgCount) - i*bunchMult )
+        var thumbWid = width/(bunchMult*sliderImgCount)
+
+        filtdata[i].x = thumbX
+        filtdata[i].y = 1
+
+        if(thumbX + thumbWid <= width){
+            thumbs.append('g').datum(filtdata[i]).attr('class', 'thumbframeg').append("svg:image")
+            .attr("xlink:href",  'frames/frame'+filtdata[i].vidnum.toString()+'.png')
+            .attr("class",  'thumbframe')
+            .attr("x", thumbX)
+            .attr("y",  0)
+            .attr("height", height)
+            .attr("width", thumbWid)
+        }
+    }
+
+    thumbs    
+    .data(filtdata)
+
+    // This allows to find the closest X index of the mouse:
+    var bisect = d3.bisector(function (d) { return d.vidnum; }).left;
+
+    function mouseclick(){
+        //get a new maxEnd--paths handle focus differently, so we need to do this.
+        var x0 = x.invert(d3.mouse(this)[0]);
+        var i = bisect(filtdata, x0, 1);
+        selectedData = filtdata[i]
+
+        var uxvidPrevTime =  uxvideo.currentTime;
+        uxvideo.currentTime = uxvideo.duration * selectedData.vidnum/maxEnd
+
+        interactiontracking(JSON.stringify(d3.mouse(this)), 'vidtimelineholder', 'vidtimelineholder', 'click', [{oldtime: uxvidPrevTime}, {newtime: uxvideo.currentTime}])
+
+    }
+
+
+    /*
+    thumbs.selectAll('.thumbframe')
+    .transition().duration(1)
+    .attr('width', function(d){
+        return(rectWidth(d.vidnum, d.vidnum+width/(bunchMult*sliderImgCount)))
+    })
+    .attr('x', function(d){
+        return(x(d.start))
+    })
+    */
+}
+
+function rescaleAnnotations(){
+    //We could just redraw the damned thing, but that's a really ugly fix
+    //...except we're already doing it, kind of, whenever we update the annotations.
+    //So we'll need to make sure this works anyway! 
+    //createAnnotationsTimeline()
 }

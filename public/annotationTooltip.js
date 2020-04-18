@@ -1,6 +1,7 @@
+var uxvideo = document.getElementById("video_html5_api");
 
 // The annotations box looks good and should be what we use when the user opts to add annotation to timeline
-$(document).ready(function () {
+function appendAnnotations() {
 
 
     var annotbtnXPad = 15
@@ -8,18 +9,32 @@ $(document).ready(function () {
 
     var annotDiv = d3.select('body').append('div')
     .attr('id', 'AnnotationTooltip')
-    .attr('class', 'annotations')
-    .style('max-width', '30%')
+    .attr('class', 'annotations ui-widget-content')
+    .style('max-width', '20vw')
+    .style('max-height', '20vh')
+    .style('width', 'auto')
+    .style('height', 'auto')
     .style('display', 'none'); //we will change this when called
-
+    
+    //make it draggable
+    $( function() {
+        $( "#AnnotationTooltip" ).draggable();
+      } );
+      
     var annotBox = annotDiv.append('div')
-        .attr('class', 'annotations-box');
+        .attr('class', 'annotations-box')
+        .style('width', 'auto')
+        .style('height', 'auto')
 
     var annotForm = annotBox.append('form')
     .attr('accept-charset', 'UTF-8')
-    .attr('autocomplete', 'off');
+    .attr('autocomplete', 'off')
+    .attr('display', 'flex')
+    .style('max-width', '20vw')
 
-    var annotFieldSet = annotForm.append('fieldset');
+    var annotFieldSet = annotForm.append('fieldset')
+    .style('max-width', '20vw')
+    .style('min-width', '20vw')
 
     var annotLegend = annotFieldSet.append('legend')
         .text('Annotation');
@@ -30,7 +45,7 @@ $(document).ready(function () {
 
     annotFieldSet.append('textarea')
         .attr('id', 'annotation-text')
-        .style('height', '100px');
+        .style('max-width', '18vw')
 
     annotFieldSet.append('br');
 
@@ -51,6 +66,9 @@ $(document).ready(function () {
         .attr('value', 'Cancel')
         .on('click', function(){
             annotDiv.style('display', 'none')
+
+            interactiontracking('cancel annotate', 'annotationTooltip', 'annotate-cancel', 'click')
+
         }) //we will add and change this when called
 
     //Now, for each timeline, add icons
@@ -93,7 +111,9 @@ $(document).ready(function () {
     annPointBtn.on('mouseover', annMouseOver)
     annPointBtn.on('mouseout', annMouseOut)
     annPointBtn.on('click', function(){
-        annMouseClick('Point')
+        //annMouseClick('Point')
+        annMouseClick(this.parentNode.parentNode.parentNode.getAttribute("id"),'Point')
+
     })
 
 
@@ -120,7 +140,7 @@ $(document).ready(function () {
     annIntrvlBtn.on('mouseover', annMouseOver)
     annIntrvlBtn.on('mouseout', annMouseOut)
     annIntrvlBtn.on('click', function(){
-        annMouseClick('Interval')
+        annMouseClick(this.parentNode.parentNode.parentNode.getAttribute("id"),'Interval')
     })
 
 
@@ -151,6 +171,9 @@ $(document).ready(function () {
         .attr('width', 100)
         .attr('height', 35)
         .attr('x', -60)
+
+        interactiontracking('call annotation tooltip button label show', this.parentNode.parentNode.parentNode.getAttribute("id"), 'add-annotation-button', 'mouseover')
+
     }
 
     function annMouseOut(){
@@ -180,25 +203,31 @@ $(document).ready(function () {
         .attr('x', -1)
         .attr('width', 20)
         .attr('height', 20)
+
+        interactiontracking('call annotation tooltip button label hide', this.parentNode.parentNode.parentNode.getAttribute("id"), 'add-annotation-button', 'mouseout')
+
     }
 
-    function annMouseClick(annotType){
+    function annMouseClick(timelineID, annotType){
         d3.select('#AnnotationTooltip')
-        .style("transform", "translate(" + (d3.event.pageX - 300) + "px," + (d3.event.pageY + 30 -  window.devicePixelRatio * window.screen.height) + "px)")   
+        .style("transform", "translate(70vw," + (100*(d3.event.pageY - (50 + window.innerHeight))/window.innerHeight) + "vh)")   
         .style('display', 'flex')
+
+        //focus on the text entry field
+        document.getElementById("annotation-text").focus();
 
         annotLegend.text(annotType + " Annotation")
 
         if(annotType == 'Interval'){
-            annotSubmitButton.on('click', addIntervalAnnotation)
+            annotSubmitButton.on('click', function(){addIntervalAnnotation(timelineID)})
         } else {
-            annotSubmitButton.on('click', addPointAnnotation)
+            annotSubmitButton.on('click', function(){addPointAnnotation(timelineID)})
         }
 
         
     }
 
-})
+}
 
 /**
  * .transition().duration(100)
@@ -208,3 +237,8 @@ $(document).ready(function () {
 
 
  */
+
+uxvideo.addEventListener('loadeddata', function(){
+    setTimeout('appendAnnotations()', 1600)
+})
+

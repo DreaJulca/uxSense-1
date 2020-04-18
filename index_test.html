@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>uxSense</title>
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="front.css" media="screen">
+    <!-- D3 -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- lodash -->
+    <script src="lodash/lodash.min.js"></script>
+    <!-- slider -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.0.4/wNumb.min.js'></script>
+    <link rel="stylesheet" type="text/css" href="nouislider.css" />
+    <link rel="stylesheet" href="multirange.css">
+    <!-- sortable -->
+    <script type="text/javascript" src="node_modules/sortablejs/Sortable.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+
+    <!-- <link rel="stylesheet" href="https://demos.jquerymobile.com/1.4.2/css/themes/default/jquery.mobile-1.4.2.min.css"> -->
+    <!-- <script src="https://demos.jquerymobile.com/1.4.2/js/jquery.js"></script> -->
+
+    <!-- <script src="https://demos.jquerymobile.com/1.4.2/js/jquery.mobile-1.4.2.min.js"></script> -->
+
+</head>
+
+<body>
+    <!-- Check if firefox; otherwise assume chrome -->
+    <script>window.isFirefox = typeof InstallTrigger !== 'undefined';
+    </script>
+    <!--div class="menu">
+        <div class="menu-box">
+            <div style="background-color: #0099cc">
+                <div class="nav-wrapper">
+                    <a href="#" class="brand-logo center" style="color:white">
+                        <bold>uxSense</bold>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div-->
+    <div class="grid-container">
+        <div class="left">
+            <div class="video">
+                <div class="video-box">
+                    <video id="video_html5_api" width="700" height="400" style="text-align: center;" controls preload>
+                        <source src="TableauUser.mp4" type="video/mp4">
+                        <source src="TableauUser.ogg" type="video/ogg"> Your browser does not support HTML5 video.
+                    </video>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="search">
+                <div class="search-bar">
+                    <nav>
+                        <div class="nav-wrapper">
+                            <form>
+                                <div class="input-field">
+                                    <!-- <h6>Search and Filter</h6> -->
+                                    <input id="search" type="search" required placeholder="Search and Filter Transcript">
+                                    <label class="label-icon" for="search">
+                                        <i class="material-icons" style="color:gray">search</i>
+                                    </label>
+                                    <i class="material-icons" style="color:gray">close</i>
+                                </div>
+                            </form>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- The annotations box looks good and should be what we use when the user opts to add annotation to timeline-->
+            <!-- Temporary suppression is only to see what layout looks like if we have only text table and search bar-->
+            <!--div class="annotations">
+                <div class="annotations-box">
+                    <form accept-charset="UTF-8" autocomplete="off">
+                        <fieldset>
+                            <legend> Annotation </legend>
+                            <label for="name">Notes</label>
+                            <textarea id="annotation-text" style="height:100px;"></textarea>
+                            <br/>
+                        </fieldset>
+                    </form>
+                    <input id="annotate-submit" class="btn" type="button" value="Submit" onclick="addAnnotation()"></button>
+                </div>
+                <script src="annotate.js"></script>
+            </div-->
+            <div class="tags">
+                <div class="tags-table">
+                    <div class="responsive-table table-status-sheet">
+                        <table id="annotation-table" class="highlight bordered">
+                            <!-- <colgroup>
+                                <col span="1" style="width: 20%;">
+                                <col span="1" style="width: 30%;">
+                                <col span="1" style="width: 50%;">
+                            </colgroup> -->
+                            <thead>
+                                <tr>
+                                    <th class="center" style="width: 20%;">Timestamp</th>
+                                    <!-- <th class="center" style="width: 30%;">Tags</th>
+                                    <th class="center" style="width: 50%;">Annotations</th> -->
+                                    <th class="center" style="width: 80%;">Annotation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <script src="load-annotations.js"></script>
+            </div>
+            <!--div class="filter">
+                <div class="filter-box">
+                    <form action="#">
+                        <p>
+                            <ul id="parent">
+                                <li>
+                                    <label>
+                                        <input type="checkbox" />
+                                        <span>Speech Rate</span>
+                                    </label>
+                                <li>
+                                    <div class="container">
+                                        <div id="speechrate_slider"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>
+                                        <input type="checkbox" />
+                                        <span>Pitch</span>
+                                    </label>
+                                </li>
+                                <li>
+                                    <div id="pitch_slider"></div>
+                                </li>
+                            </ul>
+
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Action1</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Action2</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" />
+                                <span>Posture</span>
+                            </label>
+                        </p>
+                    </form>
+                    <script src="nouislider.js">
+                    </script>
+                    <script src="noui-slider.js">
+                    </script>
+                </div>
+            </div-->
+        </div>
+
+    </div>
+    <div id="premierefocus" style="text-align: center;">
+        <script src="focustimelines.js"></script>
+        <script src="timeline-marker.js"></script>
+    </div>
+
+    <div class="timelines">
+        <div class="timelines-box">
+
+            <div class="column" id="column1">
+                <div class="dragbox" id="item1">
+                    <h2>Handle 1</h2>
+                    <div class="dragbox-content">
+                        <!-- Panel Content Here -->
+                    </div>
+                </div>
+                <div class="dragbox" id="item2">
+                    <h2>
+                        <span class="configure">
+                            <a href="#">Configure</a>
+                        </span>Handle 2</h2>
+                    <div class="dragbox-content">
+                        <!-- Panel Content Here -->
+                    </div>
+                </div>
+                <div class="dragbox" id="item3">
+                    <h2>Handle 3</h2>
+                    <div class="dragbox-content">
+                        <!-- Panel Content Here -->
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                $(function () {
+                    $('.dragbox')
+                        .each(function () {
+                            $(this).hover(function () {
+                                $(this).find('h2').addClass('collapse');
+                            }, function () {
+                                $(this).find('h2').removeClass('collapse');
+                            })
+                                .find('h2').hover(function () {
+                                    $(this).find('.configure').css('visibility', 'visible');
+                                }, function () {
+                                    $(this).find('.configure').css('visibility', 'hidden');
+                                })
+                                .click(function () {
+                                    $(this).siblings('.dragbox-content').toggle();
+                                })
+                                .end()
+                                .find('.configure').css('visibility', 'hidden');
+                        });
+                    $('.column').sortable({
+                        connectWith: '.column',
+                        handle: 'h2',
+                        cursor: 'move',
+                        placeholder: 'placeholder',
+                        forcePlaceholderSize: true,
+                        opacity: 0.4,
+                        stop: function (event, ui) {
+                            $(ui.item).find('h2').click();
+                            var sortorder = '';
+                            $('.column').each(function () {
+                                var itemorder = $(this).sortable('toArray');
+                                var columnId = $(this).attr('id');
+                                sortorder += columnId + '=' + itemorder.toString() + '&';
+                            });
+                            alert('SortOrder: ' + sortorder);
+                            /*Pass sortorder variable to server using ajax to save state*/
+                        }
+                    })
+                        .disableSelection();
+                    });
+            </script>
+
+            <ul class="collapsible expandable">
+                <li class=active>
+                    <div class="collapsible-header">
+                        <i class="material-icons">video_library</i>Thumbnails
+                        <i class="material-icons rotate right">expand_more</i>
+                    </div>
+                    <div class="collapsible-body">
+                        <div id="vidtimelineholder" class="timelineholder">
+                            <canvas id="myCanvas" width="600" height="80" style="border:1px solid #d3d3d3;">
+                                <!--canvas id="myCanvas" width="138" height="80" style="border:1px solid #d3d3d3;"-->
+                                <div id="thumbnails">
+                                </div>
+                        </div>
+                        </canvas>
+                        <!--script type="text/javascript" src="video-timeline-pregenthumbs.js"></script-->
+                        <script type="text/javascript" src="video-timeline.js"></script>
+                    </div>
+                </li>
+                <li class=active>
+                    <div class="collapsible-header">
+                        <i class="material-icons">insert_chart</i>Speech Rate
+                        <i class="material-icons rotate right">expand_more</i>
+                    </div>
+                    <div class="collapsible-body">
+                        <div id="speech-rate" class="timelineholder"></div>
+                        <script type="text/javascript" src="speechrate-line.js"></script>
+                        <!-- <script type="text/javascript" src="speechrate-bar.js"></script> -->
+                    </div>
+                </li>
+                <li class=active>
+                    <div class="collapsible-header">
+                        <i class="material-icons">timeline</i>Pitch
+                        <i class="material-icons rotate right">expand_more</i>
+                    </div>
+                    <div class="collapsible-body">
+                        <div id="pitch" class="timelineholder"></div>
+                        <script type="text/javascript" src="pitch-area.js"></script>
+                    </div>
+                </li>
+                <li class=active>
+                    <div class="collapsible-header">
+                        <i class="material-icons">whatshot</i>Action
+                        <i class="material-icons rotate right">expand_more</i>
+                    </div>
+                    <div class="collapsible-body">
+                        <div id="Action1" class="timelineholder"></div>
+                        <script type="text/javascript" src="action-1.js"></script>
+                    </div>
+                </li>
+                <li class=active>
+                    <div class="collapsible-header">
+                        <i class="material-icons">insert_emoticon</i>Emotion
+                        <i class="material-icons rotate right">expand_more</i>
+                    </div>
+                    <div class="collapsible-body">
+                        <div id="Emotion" class="timelineholder"></div>
+                        <script type="text/javascript" src="emotion.js"></script>
+                    </div>
+                </li>
+                <li class=active>
+                    <div class="collapsible-header">
+                        <i class="material-icons">assignment</i>User Annotations
+                        <i class="material-icons rotate right">expand_more</i>
+                    </div>
+                    <div class="collapsible-body">
+                        <div id="AnnotationTimeline" class="timelineholder"></div>
+                        <script type="text/javascript" src="annotationtimeline.js"></script>
+                    </div>
+                </li>
+            </ul>
+            <!-- <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script> -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+            <script>
+                $(document).ready(function () {
+                    $('.collapsible.expandable').collapsible({
+                        accordion: false, // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+                    });
+                });
+            </script>
+
+            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
+                document.addEventListener('DOMContentLoaded', function () {
+                    M.AutoInit();
+                    var elem = document.querySelector('.collapsible.expandable');
+                    var instance = M.Collapsible.init(elem, {
+                        accordion: false
+                    });
+                });
+            </script> -->
+
+            <script type="text/javascript" src="timeline-filters.js"></script>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 //obsolete
 function garbageaddIntervalAnnotation(){
     var annotation = document.getElementById('annotation-text');
-    var video = document.getElementById("ux-video");
+    var video = document.getElementById("video_html5_api");
     var selrect = d3.select('#focussvg').select('rect.selection');
 
     var selwid = parseFloat(selrect.attr('width'))

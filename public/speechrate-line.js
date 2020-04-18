@@ -1,16 +1,27 @@
-var video = document.getElementById('ux-video');
+var video = document.getElementById('video_html5_api');
 
 var margin = { top: 0, right: 50, bottom: 0, left: 50 },
     // width = 460 - margin.left - margin.right,
     // height = 400 - margin.top - margin.bottom;
-    width = 1200,
     height = 100 - margin.top - margin.bottom;
+    
+//windowsize fix
+width = window.innerWidth - (margin.left + margin.right)
+
+
 
 // append the svg object to the body of the page
 var svg = d3.select("#speech-rate")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", "100%")
+    .attr("height", (height + margin.top + margin.bottom))
+    .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
+    .attr("preserveAspectRatio", "none")
+    .style('display', 'inline-block')
+    .style('position', 'relative')
+
+//    .attr("width", width + margin.left + margin.right)
+//    .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");

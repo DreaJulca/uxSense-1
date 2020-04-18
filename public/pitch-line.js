@@ -1,11 +1,16 @@
-var video = document.getElementById('ux-video');
+var video = document.getElementById('video_html5_api');
 
 // set the dimensions and margins of the graph
 var margin = { top: 10, right: 50, bottom: 10, left: 50 },
     // width = 460 - margin.left - margin.right,
     // height = 400 - margin.top - margin.bottom;
-    width = 1200,
     height = 100 - margin.top - margin.bottom;
+
+//windowsize fix
+var margin = { top: 10, right: 50, bottom: 10, left: 50 }
+
+
+
 
 // append the svg object to the body of the page
 var svg2 = d3.select("#pitch")

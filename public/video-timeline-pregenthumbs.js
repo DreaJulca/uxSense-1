@@ -1,6 +1,6 @@
 import { Binary } from "mongodb";
 
-var video = document.getElementById("ux-video");
+var video = document.getElementById("video_html5_api");
 var vidDuration = 0;
 var vidTimelineInterval = 30;
 var vidTimelineFrameCount = 8;

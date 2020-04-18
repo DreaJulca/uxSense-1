@@ -1,5 +1,5 @@
 var sliderImgCount = 11;
-var video = document.getElementById('ux-video');
+var video = document.getElementById('video_html5_api');
 var canvas = document.getElementById('myCanvas');
 var context = canvas.getContext('2d');
 //context.drawImage(video, (i/vidTimelineInterval) * 100, 0, 100, 80);
